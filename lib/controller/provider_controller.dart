@@ -51,13 +51,13 @@ class LoanSummaryProvider with ChangeNotifier {
           }
         }
 
-        // Set column labels from the first table data's columns
+
         columnLabels = tableData
             .first.kpiResultDtoForTable!.first.dynamicGrid!.columns!
             .map((e) => e.title!)
             .toList();
 
-        // Populate rowValues
+
         for (var e in tableData.first.kpiResultDtoForTable!.first.dynamicGrid!.raws!) {
           dataSource.add(e.dimDesc!);
           dataSource.add(e.factCustomerLoanOutstandingBalancePBG!.toString());

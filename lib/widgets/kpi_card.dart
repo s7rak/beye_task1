@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../controller/provider_controller.dart';
 
 class PbgCard extends StatefulWidget {
-  final List<KpiResultDto> kpiDataList; // Adjust to a list of data
+  final List<KpiResultDto> kpiDataList;
   final double current;
   final int index;
   final String kpiAlias;
@@ -61,7 +61,7 @@ class _PbgCardState extends State<PbgCard> {
           curve: Curves.linear,
           child: provider.kpiDataListOpenClose[widget.index]
               ? Padding(
-            key: ValueKey<int>(1), // Different key for different state
+            key: ValueKey<int>(1),
             padding: EdgeInsets.all(16),
             child: Row(
               children: [
@@ -79,7 +79,7 @@ class _PbgCardState extends State<PbgCard> {
             ),
           )
               : Padding(
-            key: ValueKey<int>(2), // Different key for different state
+            key: ValueKey<int>(2),
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
