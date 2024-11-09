@@ -1,1 +1,0 @@
-int productIndex = 0;

@@ -1,96 +1,18 @@
 class KpiResult {
-  final int componentViewId;
-  final int? containerId;
-  final int componentId;
-  final Component component;
-  final int viewId;
-  final View view;
-  final String kpiName;
-  final String dimension;
-  final String dimModule;
-  final dynamic top;
-  final String chartType;
-  final bool hasManageSettings;
-  final bool enableChangeDimension;
-  final bool enableKpiInfo;
-  final bool enableDrillDown;
-  final bool enableChangeKpi;
-  final bool enableRelatedScreen;
-  final bool enableAnalyze;
-  final dynamic color;
-  final bool isChanged;
-  final List<KpiResultDto> kpiResultDto;
+  late final int componentId;
+  late final Component component;
+  late final View view;
+  late final List<KpiResultDto> kpiResultDto;
 
-  KpiResult({
-    required this.componentViewId,
-    this.containerId,
-    required this.componentId,
-    required this.component,
-    required this.viewId,
-    required this.view,
-    required this.kpiName,
-    required this.dimension,
-    required this.dimModule,
-    this.top,
-    required this.chartType,
-    required this.hasManageSettings,
-    required this.enableChangeDimension,
-    required this.enableKpiInfo,
-    required this.enableDrillDown,
-    required this.enableChangeKpi,
-    required this.enableRelatedScreen,
-    required this.enableAnalyze,
-    this.color,
-    required this.isChanged,
-    required this.kpiResultDto,
-  });
-
-  factory KpiResult.fromJson(Map<String, dynamic> json) {
-    return KpiResult(
-      componentViewId: json['componentViewId'] ?? 0,
-      containerId: json['containerId'],
-      componentId: json['componentId'] ?? 0,
-      component: Component.fromJson(json['component'] ?? {}),
-      viewId: json['viewId'] ?? 0,
-      view: View.fromJson(json['view'] ?? {}),
-      kpiName: json['kpiName'] ?? '',
-      dimension: json['dimension'] ?? '',
-      dimModule: json['dimModule'] ?? '',
-      top: json['top'],
-      chartType: json['chartType'] ?? '',
-      hasManageSettings: json['hasManageSettings'] ?? false,
-      enableChangeDimension: json['enableChangeDimension'] ?? false,
-      enableKpiInfo: json['enableKpiInfo'] ?? false,
-      enableDrillDown: json['enableDrillDown'] ?? false,
-      enableChangeKpi: json['enableChangeKpi'] ?? false,
-      enableRelatedScreen: json['enableRelatedScreen'] ?? false,
-      enableAnalyze: json['enableAnalyze'] ?? false,
-      color: json['color'],
-      isChanged: json['isChanged'] ?? false,
-      kpiResultDto: (json['kpiResultDto'] as List?)
-          ?.map((item) => KpiResultDto.fromJson(item ?? {}))
-          .toList() ??
-          [],
-    );
+  KpiResult.fromJson(Map<String, dynamic> json){
+    componentId = json['componentId'];
+    component = Component.fromJson(json['component']);
+    view = View.fromJson(json['view']);
+    kpiResultDto = List.from(json['kpiResultDto']).map((e)=>KpiResultDto.fromJson(e)).toList();
   }
 }
 
 class Component {
-  final int componentId;
-  final String componentName;
-  final String description;
-  final bool current;
-  final bool lastValue;
-  final bool lastMonth;
-  final bool yesterday;
-  final bool growth;
-  final bool budget;
-  final bool ranking;
-  final bool vintage;
-  final bool movement;
-  final bool monthlyTrend;
-  final dynamic top;
-
   Component({
     required this.componentId,
     required this.componentName,
@@ -107,43 +29,59 @@ class Component {
     required this.monthlyTrend,
     this.top,
   });
+  late final int componentId;
+  late final String componentName;
+  late final String description;
+  late final bool current;
+  late final bool lastValue;
+  late final bool lastMonth;
+  late final bool yesterday;
+  late final bool growth;
+  late final bool budget;
+  late final bool ranking;
+  late final bool vintage;
+  late final bool movement;
+  late final bool monthlyTrend;
+  late final Null top;
 
-  factory Component.fromJson(Map<String, dynamic> json) {
-    return Component(
-      componentId: json['componentId'] ?? 0,
-      componentName: json['componentName'] ?? '',
-      description: json['description'] ?? '',
-      current: json['current'] ?? false,
-      lastValue: json['lastValue'] ?? false,
-      lastMonth: json['lastMonth'] ?? false,
-      yesterday: json['yesterday'] ?? false,
-      growth: json['growth'] ?? false,
-      budget: json['budget'] ?? false,
-      ranking: json['ranking'] ?? false,
-      vintage: json['vintage'] ?? false,
-      movement: json['movement'] ?? false,
-      monthlyTrend: json['monthlyTrend'] ?? false,
-      top: json['top'],
-    );
+  Component.fromJson(Map<String, dynamic> json){
+    componentId = json['componentId'];
+    componentName = json['componentName'];
+    description = json['description'];
+    current = json['current'];
+    lastValue = json['lastValue'];
+    lastMonth = json['lastMonth'];
+    yesterday = json['yesterday'];
+    growth = json['growth'];
+    budget = json['budget'];
+    ranking = json['ranking'];
+    vintage = json['vintage'];
+    movement = json['movement'];
+    monthlyTrend = json['monthlyTrend'];
+    top = null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['componentId'] = componentId;
+    _data['componentName'] = componentName;
+    _data['description'] = description;
+    _data['current'] = current;
+    _data['lastValue'] = lastValue;
+    _data['lastMonth'] = lastMonth;
+    _data['yesterday'] = yesterday;
+    _data['growth'] = growth;
+    _data['budget'] = budget;
+    _data['ranking'] = ranking;
+    _data['vintage'] = vintage;
+    _data['movement'] = movement;
+    _data['monthlyTrend'] = monthlyTrend;
+    _data['top'] = top;
+    return _data;
   }
 }
 
 class View {
-  final int viewId;
-  final String viewKeyName;
-  final int moduleId;
-  final Module module;
-  final bool hasMoreActions;
-  final bool hasFilter;
-  final bool hasGroup;
-  final String dimModule;
-  final String dimName;
-  final bool hasDateFilter;
-  final dynamic filterKey;
-  final dynamic fromDate;
-  final dynamic toDate;
-  final bool hasAI;
-
   View({
     required this.viewId,
     required this.viewKeyName,
@@ -160,34 +98,59 @@ class View {
     this.toDate,
     required this.hasAI,
   });
+  late final int viewId;
+  late final String viewKeyName;
+  late final int moduleId;
+  late final Module module;
+  late final bool hasMoreActions;
+  late final bool hasFilter;
+  late final bool hasGroup;
+  late final String dimModule;
+  late final String dimName;
+  late final bool hasDateFilter;
+  late final Null filterKey;
+  late final Null fromDate;
+  late final Null toDate;
+  late final bool hasAI;
 
-  factory View.fromJson(Map<String, dynamic> json) {
-    return View(
-      viewId: json['viewId'] ?? 0,
-      viewKeyName: json['viewKeyName'] ?? '',
-      moduleId: json['moduleId'] ?? 0,
-      module: Module.fromJson(json['module'] ?? {}),
-      hasMoreActions: json['hasMoreActions'] ?? false,
-      hasFilter: json['hasFilter'] ?? false,
-      hasGroup: json['hasGroup'] ?? false,
-      dimModule: json['dimModule'] ?? '',
-      dimName: json['dimName'] ?? '',
-      hasDateFilter: json['hasDateFilter'] ?? false,
-      filterKey: json['filterKey'],
-      fromDate: json['fromDate'],
-      toDate: json['toDate'],
-      hasAI: json['hasAI'] ?? false,
-    );
+  View.fromJson(Map<String, dynamic> json){
+    viewId = json['viewId'];
+    viewKeyName = json['viewKeyName'];
+    moduleId = json['moduleId'];
+    module = Module.fromJson(json['module']);
+    hasMoreActions = json['hasMoreActions'];
+    hasFilter = json['hasFilter'];
+    hasGroup = json['hasGroup'];
+    dimModule = json['dimModule'];
+    dimName = json['dimName'];
+    hasDateFilter = json['hasDateFilter'];
+    filterKey = null;
+    fromDate = null;
+    toDate = null;
+    hasAI = json['hasAI'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['viewId'] = viewId;
+    _data['viewKeyName'] = viewKeyName;
+    _data['moduleId'] = moduleId;
+    _data['module'] = module.toJson();
+    _data['hasMoreActions'] = hasMoreActions;
+    _data['hasFilter'] = hasFilter;
+    _data['hasGroup'] = hasGroup;
+    _data['dimModule'] = dimModule;
+    _data['dimName'] = dimName;
+    _data['hasDateFilter'] = hasDateFilter;
+    _data['filterKey'] = filterKey;
+    _data['fromDate'] = fromDate;
+    _data['toDate'] = toDate;
+    _data['hasAI'] = hasAI;
+    return _data;
   }
 }
 
 class Module {
-  final int moduleId;
-  final String? moduleName;
-  final String? alias;
-  final dynamic moduleOrder;
-  final bool? isHiddenInUI;
-
   Module({
     required this.moduleId,
     this.moduleName,
@@ -195,38 +158,59 @@ class Module {
     this.moduleOrder,
     this.isHiddenInUI,
   });
+  late final int moduleId;
+  late final Null moduleName;
+  late final Null alias;
+  late final Null moduleOrder;
+  late final Null isHiddenInUI;
 
-  factory Module.fromJson(Map<String, dynamic> json) {
-    return Module(
-      moduleId: json['moduleId'] ?? 0,
-      moduleName: json['moduleName'],
-      alias: json['alias'],
-      moduleOrder: json['moduleOrder'],
-      isHiddenInUI: json['isHiddenInUI'],
-    );
+  Module.fromJson(Map<String, dynamic> json){
+    moduleId = json['moduleId'];
+    moduleName = null;
+    alias = null;
+    moduleOrder = null;
+    isHiddenInUI = null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['moduleId'] = moduleId;
+    _data['moduleName'] = moduleName;
+    _data['alias'] = alias;
+    _data['moduleOrder'] = moduleOrder;
+    _data['isHiddenInUI'] = isHiddenInUI;
+    return _data;
   }
 }
 
 class KpiResultDto {
-  final String kpiAlias;
-  final double total;
-  final double percentage;
-  final String date;
-  final dynamic dimDesc;
-  final dynamic keyValue;
-  final dynamic dimDesc1;
-  final int yearId;
-  final int monthId;
-  final dynamic qtrName;
-  final dynamic period;
-  final String kpiName;
-  final dynamic numerator;
-  final dynamic denominator;
-  final dynamic budget;
-  final dynamic budgetPer;
-  final dynamic balance;
+  late final List<Data> data;
+  late final double current;
+  late final String kpiName;
+  late final String kpiAlias;
+  late final String kpiType;
+  late final String labelCurrentText;
+  late final bool isIncremental;
+  late final String asOfDate;
+  late final String fromDate;
+  late final String toDate;
 
-  KpiResultDto({
+  KpiResultDto.fromJson(Map<String, dynamic> json){
+    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+    current = json['current'];
+    kpiName = json['kpiName'];
+    kpiAlias = json['kpiAlias'];
+    kpiType = json['kpiType'];
+    labelCurrentText = json['labelCurrentText'];
+    isIncremental = json['isIncremental'];
+    asOfDate = json['asOfDate'];
+    fromDate = json['fromDate'];
+    toDate = json['toDate'];
+  }
+}
+
+class Data {
+  Data({
     required this.kpiAlias,
     required this.total,
     required this.percentage,
@@ -245,26 +229,63 @@ class KpiResultDto {
     this.budgetPer,
     this.balance,
   });
+  late final String kpiAlias;
+  late final double total;
+  late final int percentage;
+  late final String date;
+  late final Null dimDesc;
+  late final Null keyValue;
+  late final Null dimDesc1;
+  late final int yearId;
+  late final int monthId;
+  late final Null qtrName;
+  late final Null period;
+  late final String kpiName;
+  late final Null numerator;
+  late final Null denominator;
+  late final int? budget;
+  late final Null budgetPer;
+  late final Null balance;
 
-  factory KpiResultDto.fromJson(Map<String, dynamic> json) {
-    return KpiResultDto(
-      kpiAlias: json['kpiAlias'] ?? '',
-      total: json['total']?.toDouble() ?? 0.0,
-      percentage: json['percentage']?.toDouble() ?? 0.0,
-      date: json['date'] ?? '',
-      dimDesc: json['dimDesc'],
-      keyValue: json['keyValue'],
-      dimDesc1: json['dimDesc1'],
-      yearId: json['yearId'] ?? 0,
-      monthId: json['monthId'] ?? 0,
-      qtrName: json['qtrName'],
-      period: json['period'],
-      kpiName: json['kpiName'] ?? '',
-      numerator: json['numerator'],
-      denominator: json['denominator'],
-      budget: json['budget'],
-      budgetPer: json['budgetPer'],
-      balance: json['balance'],
-    );
+  Data.fromJson(Map<String, dynamic> json){
+    kpiAlias = json['kpiAlias'];
+    total = json['total'];
+    percentage = json['percentage'];
+    date = json['date'];
+    dimDesc = null;
+    keyValue = null;
+    dimDesc1 = null;
+    yearId = json['yearId'];
+    monthId = json['monthId'];
+    qtrName = null;
+    period = null;
+    kpiName = json['kpiName'];
+    numerator = null;
+    denominator = null;
+    budget = null;
+    budgetPer = null;
+    balance = null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['kpiAlias'] = kpiAlias;
+    _data['total'] = total;
+    _data['percentage'] = percentage;
+    _data['date'] = date;
+    _data['dimDesc'] = dimDesc;
+    _data['keyValue'] = keyValue;
+    _data['dimDesc1'] = dimDesc1;
+    _data['yearId'] = yearId;
+    _data['monthId'] = monthId;
+    _data['qtrName'] = qtrName;
+    _data['period'] = period;
+    _data['kpiName'] = kpiName;
+    _data['numerator'] = numerator;
+    _data['denominator'] = denominator;
+    _data['budget'] = budget;
+    _data['budgetPer'] = budgetPer;
+    _data['balance'] = balance;
+    return _data;
   }
 }
