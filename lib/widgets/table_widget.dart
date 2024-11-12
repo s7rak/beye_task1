@@ -25,7 +25,11 @@ class TableDataSource extends DataGridSource {
         return Container(
           padding: EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
-          child: Text(dataCell.value.toString()),
+          child: Center(
+            child: Text(
+              dataCell.value.toString(),
+            ),
+          ),
         );
       }).toList(),
     );

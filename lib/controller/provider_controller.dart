@@ -67,9 +67,11 @@ class LoanSummaryProvider with ChangeNotifier {
             .toList();
 
         columnLabels.removeWhere((e)=>e.contains('color'));
+        columnLabels.insert(0, '#');
 
-
-        for (var e in tableData.first.kpiResultDtoForTable!.first.dynamicGrid!.raws!) {
+        for (int i = 1; i <= tableData.first.kpiResultDtoForTable!.first.dynamicGrid!.raws!.length; i++) {
+          var e = tableData.first.kpiResultDtoForTable!.first.dynamicGrid!.raws![i];
+          dataSource.add(i.toString());
           dataSource.add(e.dimDesc!);
           dataSource.add(e.factCustomerLoanOutstandingBalancePBG!.toString());
           dataSource.add(e.factCustomerLoanNumberOfLoansPBG!.toString());
@@ -80,6 +82,7 @@ class LoanSummaryProvider with ChangeNotifier {
           rowValues.add(dataSource);
           dataSource = [];
         }
+
 
         notifyListeners();
       } else {
