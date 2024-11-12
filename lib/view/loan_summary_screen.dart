@@ -30,18 +30,18 @@ class LoanSummaryScreen extends StatelessWidget {
             unselectedIconTheme: IconThemeData(color: Colors.grey),
             destinations: List.generate(
               11,
-                  (index) => NavigationRailDestination(
+              (index) => NavigationRailDestination(
                 icon: Image.asset(
                   'assets/icons/menu ($index).png',
                   width: 30,
                   fit: BoxFit.contain,
-                  color: index!=0?Colors.grey:null,
+                  color: index != 0 ? Colors.grey : null,
                 ),
                 selectedIcon: Image.asset(
                   'assets/icons/menu ($index).png',
                   width: 30,
                   fit: BoxFit.contain,
-                  color: index!=0?primaryColor:null,
+                  color: index != 0 ? primaryColor : null,
                 ),
                 label: Text(''),
               ),
@@ -198,25 +198,86 @@ class LoanSummaryScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 8),
-                        Wrap(
-                          children: List.generate(
-                            provider.kpiDataList.length,
-                            (index) => SizedBox(
-                              width:
-                                  MediaQuery.of(context).size.longestSide *0.29,
-                              child: PbgCard(
-                                kpiDataList:
-                                    provider.kpiDataList[index].kpiResultDto,
-                                current: provider.kpiDataList[index]
-                                    .kpiResultDto.first.current,
-                                kpiAlias: provider.kpiDataList[index]
-                                    .kpiResultDto.first.kpiAlias,
-                                index: index,
+                        if (provider.kpiDataList.isNotEmpty)
+                          Row(
+                            children: List.generate(3, (column) {
+                              return Expanded(
+                                child: Column(
+                                  children: [
+                                    for (int i = 0; i < 2; i++)
+                                      if (provider.kpiDataList.length >
+                                          column + i * 3)
+                                        PbgCard(
+                                          kpiDataList: provider
+                                              .kpiDataList[column + i * 3]
+                                              .kpiResultDto,
+                                          current: provider
+                                              .kpiDataList[column + i * 3]
+                                              .kpiResultDto
+                                              .first
+                                              .current,
+                                          kpiAlias: provider
+                                              .kpiDataList[column + i * 3]
+                                              .kpiResultDto
+                                              .first
+                                              .kpiAlias,
+                                          index: column + i * 3,
+                                        ),
+                                    PbgCard(
+                                      kpiAlias: 'Quick Facts - Current',
+                                      index: column + 6,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ),
+                        SizedBox(height: 8),
+                        Container(
+                          width: MediaQuery.of(context).size.longestSide * 0.4,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadiusDirectional.vertical(
+                                  top: Radius.circular(15)),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: greyColor,
+                                  blurRadius: 3,
+                                )
+                              ]),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/icons/dimensions00.png',
+                                width: 30,
+                                fit: BoxFit.contain,
                               ),
-                            ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Dimension',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Spacer(),
+                              Image.asset(
+                                'assets/icons/exp.png',
+                                width: 30,
+                                fit: BoxFit.contain,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Export',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 8),
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
@@ -225,6 +286,7 @@ class LoanSummaryScreen extends StatelessWidget {
                           child: SfDataGrid(
                             source: TableDataSource(provider.rowValues),
                             columns: provider.columnLabels.map((label) {
+                              bool isNumeric = label != 'Branch';
                               return GridColumn(
                                 columnName: label,
                                 label: Container(
@@ -233,14 +295,34 @@ class LoanSummaryScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     color: secondaryColor,
                                   ),
-                                  child: Text(
-                                    label,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          label,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => provider.sort(label,
+                                            !provider.sortAscending, isNumeric),
+                                        child: Icon(
+                                          provider.sortColumn == label
+                                              ? (provider.sortAscending
+                                                  ? Icons.arrow_upward
+                                                  : Icons.arrow_downward)
+                                              : Icons.unfold_more,
+                                          color: Colors.white,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );

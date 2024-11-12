@@ -12,6 +12,11 @@ class LoanSummaryProvider with ChangeNotifier {
   List<String> columnLabels = [];
   List<List<String>> rowValues = [];
 
+  @override
+  void dispose() {
+    // Dispose any resources like streams or controllers
+    super.dispose();
+  }
 
   Future<void> loadJsonData() async {
     try {
@@ -24,10 +29,14 @@ class LoanSummaryProvider with ChangeNotifier {
         for (var e in jsonData) {
           if (e["componentId"] == 3) {
             kpiDataList.add(KpiResult.fromJson(e));
-            kpiDataList.length>3?kpiDataListOpenClose.add(true):kpiDataListOpenClose.add(false);
+            kpiDataList.length<=3?kpiDataListOpenClose.add(true):kpiDataListOpenClose.add(false);
           }
         }
+        kpiDataListOpenClose.add(false);
+        kpiDataListOpenClose.add(false);
+        kpiDataListOpenClose.add(false);
         notifyListeners();
+        print(kpiDataListOpenClose);
       } else {
         print("JSON is not a List");
       }
@@ -57,21 +66,17 @@ class LoanSummaryProvider with ChangeNotifier {
             .map((e) => e.title!)
             .toList();
 
+        columnLabels.removeWhere((e)=>e.contains('color'));
+
 
         for (var e in tableData.first.kpiResultDtoForTable!.first.dynamicGrid!.raws!) {
           dataSource.add(e.dimDesc!);
           dataSource.add(e.factCustomerLoanOutstandingBalancePBG!.toString());
-          dataSource.add(e.factCustomerLoanOutstandingBalancePBGColor!);
           dataSource.add(e.factCustomerLoanNumberOfLoansPBG!.toString());
-          dataSource.add(e.factCustomerLoanNumberOfLoansPBGColor!);
           dataSource.add(e.factCustomerLoanSalesLoansAmount!.toString());
-          dataSource.add(e.factCustomerLoanSalesLoansAmountColor!);
           dataSource.add(e.factCustomerLoanSalesLoansNumber!.toString());
-          dataSource.add(e.factCustomerLoanSalesLoansNumberColor!);
           dataSource.add(e.factCustomerLoanDelinquency90daysRatio!.toString());
-          dataSource.add(e.factCustomerLoanDelinquency90daysRatioColor!);
           dataSource.add(e.factCustomerLoanDelinquency90daysAmount!.toString());
-          dataSource.add(e.factCustomerLoanDelinquency90daysAmountColor!);
           rowValues.add(dataSource);
           dataSource = [];
         }
@@ -85,10 +90,29 @@ class LoanSummaryProvider with ChangeNotifier {
     }
   }
 
-  Future<void> openClose(index) async {
+
+  Future<void> openClose(int index) async {
     kpiDataListOpenClose[index] = !kpiDataListOpenClose[index];
+
+    if (kpiDataListOpenClose[index]) {
+      Map<int, List<int>> toggleMap = {
+        0: [3, 6],
+        3: [0, 6],
+        6: [3, 0],
+        4: [1, 7],
+        1: [4, 7],
+        7: [1, 4],
+        5: [2, 8],
+        8: [2, 5],
+        2: [5, 8],
+      };
+
+      toggleMap[index]?.forEach((i) => kpiDataListOpenClose[i] = false);
+    }
+
     notifyListeners();
   }
+
 
 
   int productIndex = 0;
@@ -103,6 +127,25 @@ class LoanSummaryProvider with ChangeNotifier {
   Future<void> changeMenuIndex(index) async {
     menuIndex = index;
     notifyListeners();
+  }
+
+  List<String> sortColumn = [];
+  bool sortAscending = true;
+  void sort<T>(String columnName, bool ascending, bool isNumeric) {
+      sortColumn = columnLabels;
+      sortAscending = ascending;
+      rowValues.sort((a, b) {
+        final aValue = a[columnLabels.indexOf(columnName)];
+        final bValue = b[columnLabels.indexOf(columnName)];
+        if (isNumeric) {
+          return ascending
+              ? double.parse(aValue).compareTo(double.parse(bValue))
+              : double.parse(bValue).compareTo(double.parse(aValue));
+        } else {
+          return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
+        }
+      });
+      notifyListeners();
   }
 
 }
